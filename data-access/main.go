@@ -26,14 +26,22 @@ func main() {
 		log.Fatal(err)
 	}
 
-	pingErr := db.Ping()
-	if pingErr != nil {
-		log.Fatal(pingErr)
-	}
+	err = db.Ping()
+	checkAndPrintErr(err)
 	fmt.Println("Connected!")
+
 	albums, err := albumsByArtist("John Coltrane")
+	checkAndPrintErr(err)
+	fmt.Printf("Albums found: %v\n", albums)
+
+	album, err := albumById(2)
+	checkAndPrintErr(err)
+	fmt.Printf("Album found: %v\n", album)
+
+}
+
+func checkAndPrintErr(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("Albums found: %v\n", albums)
 }
