@@ -12,8 +12,8 @@ var db *sql.DB
 
 func main() {
 	cfg := mysql.Config{
-		User:                 "root",
-		Passwd:               "example",
+		User:                 "root",    //tutorial loads from os.Getenv()
+		Passwd:               "example", //tutorial loads from os.Getenv()
 		Net:                  "tcp",
 		Addr:                 "127.0.0.1:3306",
 		DBName:               "recordings",
@@ -22,9 +22,7 @@ func main() {
 
 	var err error
 	db, err = sql.Open("mysql", cfg.FormatDSN())
-	if err != nil {
-		log.Fatal(err)
-	}
+	checkAndPrintErr(err)
 
 	err = db.Ping()
 	checkAndPrintErr(err)
@@ -38,6 +36,13 @@ func main() {
 	checkAndPrintErr(err)
 	fmt.Printf("Album found: %v\n", album)
 
+	albId, err := addAlbum(Album{
+		Title:  "The Modern Sound of Better Carter",
+		Artist: "Betty Carter",
+		Price:  49.99,
+	})
+	checkAndPrintErr(err)
+	fmt.Printf("ID of added album: %v\n", albId)
 }
 
 func checkAndPrintErr(err error) {
